@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+</html>
+<p class="display-3" id="time"></p>
+<img id="main" width="280" height="200" class="btn btn-outline-primary">
+<br><br>
+<div id="words">
+    <button class="btn btn-primary" onclick="setWord(this)">pancake</button>
+    <button class="btn btn-primary" onclick="setWord(this)">movie</button>
+    <button class="btn btn-primary" onclick="setWord(this)">friend</button>
+
+</div>
+<div id="table">
+
+</div>
+<script>
+    function endgame(){
+        console.log("You guys lost")
+    }
+    function decrement(){
+        timer = document.querySelector('#time')
+        if(Number(timer.innerHTML)==0){
+            endgame()
+            return;
+        }
+        timer.innerHTML = String(Number(timer.innerHTML) - 1)
+        setTimeout(decrement, 1000)
+    }
+    function startTimer(){
+        limit = 10
+        timer = document.querySelector('#time')
+        timer.innerHTML = String(limit)
+        setTimeout(decrement, 1000)
+    }
+    window.onload = startTimer
+    //below line starts the connection
+    var roomkey = "<%= roomkey %>"
+    console.log(roomkey)
+    const socket = io('http://localhost:3001/', {query:"role=artist&roomkey="+roomkey})
+    function setWord(obj){
+        word = obj.innerHTML
+        // console.log(word)
+        socket.emit("setword", word)
+    }
+    function setMain(obj){
+        src = obj.children[0].getAttribute("src")
+        // console.log("src rec" + src)
+        img = document.querySelector('#main')
+        img.setAttribute("src", src)
+        socket.emit("mainFocus", src)
+    }
+    thr = 4;
+    function updateTable(urlrec){
+        tr = document.querySelector('#table')        
+        while(tr.children.length>thr){
+            tr.removeChild(tr.children[0])
+        }
+        btn = document.createElement("button")
+        img = document.createElement("img")
+        img.setAttribute("src", urlrec)
+        img.setAttribute("width", "280")
+        img.setAttribute("height", "200")
+        btn.appendChild(img)
+        btn.setAttribute("onclick", "setMain(this)")
+        tr.appendChild(btn)
+    }
+
+    socket.on("winner_to_artist", id=>{
+        console.log(id)
+    })
+    socket.on("imgurl",(urlrec)=>{
+        console.log(urlrec)
+        updateTable(urlrec)
+    })
+    socket.on("setpic1", urls=>{
+        for(var i = 0; i<urls.length;i+=1){
+            updateTable(urls[i])
+        }
+    })
+
+</script>

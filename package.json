@@ -1,0 +1,21 @@
+{
+  "name": "picstream",
+  "version": "1.0.0",
+  "description": "A web-game (see onenote if unclear)",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "picstream"
+  ],
+  "author": "Hardik Rajpal",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "node-fetch": "^3.0.0",
+    "pexels": "^1.2.1",
+    "socket.io": "^4.2.0"
+  }
+}
