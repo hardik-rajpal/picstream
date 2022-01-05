@@ -50,7 +50,7 @@
         // console.log("src rec" + src)
         img = document.querySelector('#main')
         img.setAttribute("src", src)
-        socket.emit("mainFocus", src)
+        socket.emit("mainFocus", {roomkey:roomkey,src:src})
     }
     thr = 4;
     function updateTable(urlrec){

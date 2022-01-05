@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<title>Hello, world!</title>
+</head>
+<body>
+<h1>Hello, world!</h1>
+<script>
+const HOST = '127.0.0.1';
+const PORT = 3001;
+var role = "artist"
+var roomkey = "123456"
+var userid = "123cde"
+var client = io('http://localhost:3001',{query:"username="+role+"&roomkey="+roomkey+"&userid="+userid});
+
+client.on('addpic', (data)=>{
+    console.log("new pic received: "+data)
+})
+client.on("winner", (data)=>{
+    console.log(data+"is the winner")
+})
+client.on('players', (data)=>{
+    console.log(data);
+})
+client.emit('setword', {word:"parrots"})
+client.emit('wordguess', {word:"lame"})
+client.emit("wordguess", {word:"parrots"})
+</script>
+</body>
+</html>
