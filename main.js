@@ -21,6 +21,7 @@ io.on("connection", (socket)=>{
     if(!rooms[roomkey]){
         rooms[roomkey] = new Room(roomkey, "", io);
     }
+    console.log(username+" "+roomkey+" "+userid)
     players[userid] = new PlayerThread(socket, roomkey, userid, username, io)
     rooms[roomkey].addPlayer(players[userid])
 })

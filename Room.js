@@ -64,6 +64,10 @@ class Room{
                 this.roundSem.leave();
                 return;
             }
+            if(this.players.findIndex((v,i,o)=>v.userid==player.userid)!==-1){
+                this.roundSem.leave();
+                return;
+            }
             player.room = this
             this.players.push(player);
             if(this.players.length===1){
@@ -79,9 +83,10 @@ class Room{
             let i = this.players.findIndex((v, i, o)=>{
                 return (v.userid===userid);
             });
+            // console.log(i);
             if(this.artistID===userid){
-                this.roundSem.leave();
                 this.players.splice(i, 1)
+                this.roundSem.leave();
                 this.endRound('')
             }
             else{
@@ -91,17 +96,31 @@ class Room{
             this.sharePlayerNames();
         })
         if(this.players.length===0){
-            //no ref to this, it's probably cleared 
+            //no ref to this room, it's probably cleared 
             //by GC.
         }
 
     }
     sharePlayerNames(){
         this.roundSem.take(()=>{
+            if(this.players.length==0){
+                this.roundSem.leave();
+                return;
+            }
             let playernames = this.players.map((v, i, [])=>{
-                return (v.username);
+                return {
+                    index:i+1,
+                    username:(v.username),
+                    score:v.score,
+                    userid:v.userid
+                };
             });
+            // console.log(this.io);
+            // console.log("room io printed above.")
+            // // console.log(this.players[0].io);
+            // console.log("player io printed above.")
             this.io.to(this.roomkey).emit('players', JSON.stringify(playernames))
+            console.log('shared players')
             this.roundSem.leave();
         })
 

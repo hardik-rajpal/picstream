@@ -9,7 +9,8 @@ class PlayerThread{
         this.username = username;
         // this.role = role;//starts undecided.
         this.userid = userid
-        // this.io = io
+        this.io = io
+        this.score = 0;
         this.room = new Room(roomkey, "");
         socket.join(roomkey)
         socket.on("setword", (data)=>{
