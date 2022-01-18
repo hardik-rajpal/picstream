@@ -1,4 +1,6 @@
-const semaphore = require("semaphore")
+const semaphore = require("semaphore");
+const { APIS } = require("./test");
+// const { default: getImgUrl } = require("./apis");
 const MAXPLAYERS = 10;
 class Room{
     //TODO: allow other users to guess even after one gets it.
@@ -125,12 +127,12 @@ class Room{
         })
 
     }
+    broadcast(event,data){
+        this.io.to(this.roomkey).emit(event, JSON.stringify(data));
+    }
     imageFromGuess(word){
-        var url = 'url to image'
-        if(this.images.includes(url)){
-            //next in line url    
-        }
-        return url;
+        APIS.getImgUrl(word, this);
+        // return url;
     }
 }
 module.exports = {Room};

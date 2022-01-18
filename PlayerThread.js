@@ -1,7 +1,4 @@
 const { Room } = require("./Room");
-const imageFromGuess = (guessword)=>{
-    return ''
-}
 class PlayerThread{
     constructor(socket, roomkey, userid, username, io){
         this.socket = socket
@@ -26,14 +23,15 @@ class PlayerThread{
                 //endround with winner as userid.
                 this.room.endRound(this.userid)
             }
-            var url = imageFromGuess(data.word)
-            io.to(this.roomkey).emit("addpic", url)
+            var url = this.room.imageFromGuess(data.word)
+            console.log(url)
+            // io.to(this.roomkey).emit("art-addpic", {url:url})
         })
         socket.on("setpic", (data)=>{
             this.room.pastImages.push(this.room.images[0])
             this.room.images.splice(0, 1)
             this.room.images.push(data.url)
-            io.to(this.roomkey).emit("setpic", data.url)
+            io.to(this.roomkey).emit("all-setpic", data.url)
             console.log("setpic called")
         })
         socket.on("timeup", (data)=>{
