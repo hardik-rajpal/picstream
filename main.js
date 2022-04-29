@@ -11,8 +11,8 @@ server.listen(3001, ()=>{
     console.log("Server running...")
 })
 
-rooms = {}
-players = {}
+let rooms = {}
+let players = {}
 io.on("connection", (socket)=>{
     hsData = socket.request;
     username = hsData._query["username"]

@@ -13,9 +13,9 @@ class Room{
         this.players = []
         this.roundSem = semaphore(1);
         this.roundRunning = false;
-        this.artistID = '';
         //true if the hidden word has been set.
         //false if the hidden word has not been set/has just been guessed.
+        this.artistID = '';
     }
     //called by artist selecting a word.
     startRound(newAnswer, artistID){
@@ -132,6 +132,7 @@ class Room{
     }
     imageFromGuess(word){
         APIS.getImgUrl(word, this);
+        // return url;
         // return url;
     }
 }

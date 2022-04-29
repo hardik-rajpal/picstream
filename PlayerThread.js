@@ -16,7 +16,7 @@ class PlayerThread{
             console.log("setword called")            
         })
         socket.on("wordguess", (data)=>{
-            //called by det.
+            //called by det socket from frontend.
             console.log("wordguess called")
             console.log(this.room.answer + " vs " +data.word)
             if(data.word===this.room.answer){
@@ -27,6 +27,7 @@ class PlayerThread{
             console.log(url)
             // io.to(this.roomkey).emit("art-addpic", {url:url})
         })
+        //set main pic, visible to artists and detectives
         socket.on("setpic", (data)=>{
             this.room.pastImages.push(this.room.images[0])
             this.room.images.splice(0, 1)
@@ -34,12 +35,15 @@ class PlayerThread{
             io.to(this.roomkey).emit("all-setpic", data.url)
             console.log("setpic called")
         })
+        //time for guessing is over
         socket.on("timeup", (data)=>{
-            //called by system.
+            //end round.
+            //broadcast what the word was.
+
             console.log("timeup called")
         })
+        //player disconnects from frontend.
         socket.on('disconnect', (data)=>{
-            // console.log("Heya")
             this.room.dropPlayer(this.userid)
         })
 
