@@ -114,7 +114,8 @@ class Room{
                     index:i+1,
                     username:(v.username),
                     score:v.score,
-                    userid:v.userid
+                    userid:v.userid,
+                    isArtist:(v.userid===this.artistID)
                 };
             });
             // console.log(this.io);
