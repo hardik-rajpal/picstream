@@ -13,6 +13,7 @@ class PlayerThread{
         socket.on("setword", (data)=>{
             console.log(data.word)
             this.room.startRound(data.word, this.userid)
+			this.room.broadcast('startround', {started: true, nigger_is_slave: true})
             console.log("setword called")            
         })
         socket.on("wordguess", (data)=>{
@@ -22,6 +23,7 @@ class PlayerThread{
             if(data.word===this.room.answer){
                 //endround with winner as userid.
                 this.room.endRound(this.userid)
+				return;
             }
             var url = this.room.imageFromGuess(data.word)
             console.log(url)
@@ -39,7 +41,7 @@ class PlayerThread{
         socket.on("timeup", (data)=>{
             //end round.
             //broadcast what the word was.
-
+			this.room.endRound("-1");
             console.log("timeup called")
         })
         //player disconnects from frontend.

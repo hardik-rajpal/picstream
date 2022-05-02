@@ -52,7 +52,14 @@ class Room{
                 //return;
             }
             if(j<this.players.length){
-                this.io.to(this.roomkey).emit("artist", this.players[j].userid)
+                this.io.to(this.roomkey).emit("artist", 
+					JSON.stringify(
+						{
+							'artistid': this.players[j].userid,
+							'options': ['dog', 'cat', 'nigger', 'faggot', 'whore']
+						}
+					)
+				)
                 //client on receiving this event (with the right userid)
                 //has to choose between 3 words to start choosing pics.
                 //timer starts on him selecting a word.
@@ -73,7 +80,15 @@ class Room{
             player.room = this
             this.players.push(player);
             if(this.players.length===1){
-                this.io.to(this.roomkey).emit('artist', player.userid)
+				this.artistID = player.userid;
+                this.io.to(this.roomkey).emit('artist', 
+					JSON.stringify(
+						{
+							'artistid': player.userid,
+							'options': ['dog', 'cat', 'nigger', 'faggot', 'whore']
+						}
+					)
+				)
             }
             this.sharePlayerNames();
             this.roundSem.leave();
